@@ -365,4 +365,18 @@ describe("API: constructor options", () => {
       });
     });
   });
+
+  describe("maxTouchPoints", () => {
+    it("should signal it isn't a touch device by default", () => {
+      const { navigator } = (new JSDOM(``)).window;
+
+      assert.strictEqual(navigator.maxTouchPoints, 0);
+    });
+
+    it("allows setting the number of supported touch contacts", () => {
+      const { navigator } = (new JSDOM(``, { maxTouchPoints: 10 })).window;
+
+      assert.strictEqual(navigator.maxTouchPoints, 10);
+    });
+  });
 });

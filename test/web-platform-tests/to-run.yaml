@@ -847,6 +847,63 @@ DIR: html/webappapis/timers
 
 ---
 
+DIR: pointerevents
+
+extension/idlharness.window.html: [fail, fetch is not defined]
+extension/pointerevent_coalesced_events_attributes.html: [timeout, getCoalescedEvents not implemented]
+extension/pointerevent_constructor.html: [fail, getCoalescedEvents not implemented]
+extension/pointerevent_getCoalescedEvents_when_pointerlocked.html: [timeout, Pointer Lock not unimplemented]
+extension/pointerevent_pointerrawupdate.html: [timeout, Pointer Lock not implemented]
+extension/pointerevent_touch-action-*: [timeout, touch-action not implemented]
+
+idlharness.window.html: [fail, fetch is not defined]
+inheritance.html: [fail, getComputedStyle does not implement initial value of touch-action]
+
+parsing/touch-action-computed.html: [fail, touch-action not implemented]
+#parsing/touch-action-invalid.html: [pass]
+parsing/touch-action-valid.html: [fail, touch-action not implemented]
+
+pointerevent_attributes_hoverable_pointers.html: [timeout, Uses testdriver]
+pointerevent_attributes_nohover_pointers.html: [timeout, Uses testdriver]
+pointerevent_boundary_events_at_implicit_release_hoverable_pointers.html: [timeout, Uses testdriver]
+pointerevent_boundary_events_in_capturing.html: [timeout, Uses testdriver]
+pointerevent_capture_mouse.html: [timeout, Uses testdriver]
+pointerevent_change-touch-action-onpointerdown_touch.html: [timeout, Uses testdriver]
+pointerevent_click_during_capture.html: [timeout, Uses testdriver]
+# pointerevent_constructor.html: [pass]
+pointerevent_disabled_form_control.html: [fail-slow, Uses testdriver]
+pointerevent_element_haspointercapture.html: [fail-slow, Uses testdriver]
+pointerevent_lostpointercapture_for_disconnected_node.html: [fail-slow, Uses testdriver]
+pointerevent_lostpointercapture_is_first.html: [fail-slow, Uses testdriver]
+pointerevent_mouse_capture_change_hover.html: [fail, Uses testdriver]
+#pointerevent_on_event_handlers.html: [pass]
+pointerevent_pointercancel_touch.html: [fail-slow, Uses testdriver]
+pointerevent_pointercapture_in_frame.html: [fail-slow, Uses testdriver]
+pointerevent_pointerenter_does_not_bubble.html: [fail-slow, Uses testdriver]
+pointerevent_pointerleave_after_pointercancel_touch.html: [fail-slow, Uses testdriver]
+pointerevent_pointerleave_descendant_over.html: [fail-slow, Uses testdriver]
+pointerevent_pointerleave_descendants.html: [fail-slow, Uses testdriver]
+pointerevent_pointerleave_does_not_bubble.html: [fail-slow, Uses testdriver]
+pointerevent_pointermove.html: [fail-slow, Uses testdriver]
+pointerevent_pointermove_isprimary_same_as_pointerdown.html: [fail-slow, Uses testdriver]
+pointerevent_pointermove_on_chorded_mouse_button.html: [fail-slow, Uses testdriver]
+pointerevent_pointerout_after_pointercancel_touch.html: [fail-slow, Uses testdriver]
+pointerevent_pointerout_pen.html: [fail-slow, Uses testdriver]
+pointerevent_pointerout_received_once.html: [fail-slow, Uses testdriver]
+pointerevent_releasepointercapture_*: [fail-slow, Pointer Capture not implemented]
+pointerevent_root_computed_style.html: [fail, getComputedStyle does not support inheritance]
+pointerevent_root_hit_test.html: [fail, document.elementFromPoint not implemented]
+pointerevent_sequence_at_implicit_release_on_click.html: [timeout, Uses testdriver]
+pointerevent_sequence_at_implicit_release_on_drag.html: [timeout, Uses testdriver]
+pointerevent_setpointercapture_*: [timeout, Pointer Capture not implemented]
+pointerevent_suppress_compat_events_on_click.html: [timeout, Uses testdriver]
+pointerevent_suppress_compat_events_on_drag_mouse.html: [timeout, Uses testdriver]
+pointerevent_touch-action-*: [timeout, Uses testdriver]
+
+pointerlock/*: [timeout, Pointer Lock not implemented]
+
+---
+
 DIR: shadow-dom
 
 Document-prototype-currentScript.html: [timeout, Test not up to date next with updating wpt it should work]

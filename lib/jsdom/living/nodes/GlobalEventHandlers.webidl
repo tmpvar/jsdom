@@ -63,3 +63,17 @@ interface mixin GlobalEventHandlers {
   attribute EventHandler onvolumechange;
   attribute EventHandler onwaiting;
 };
+
+// https://w3c.github.io/pointerevents/#extensions-to-the-globaleventhandlers-mixin
+partial interface mixin GlobalEventHandlers {
+    attribute EventHandler ongotpointercapture;
+    attribute EventHandler onlostpointercapture;
+    attribute EventHandler onpointerdown;
+    attribute EventHandler onpointermove;
+    attribute EventHandler onpointerup;
+    attribute EventHandler onpointercancel;
+    attribute EventHandler onpointerover;
+    attribute EventHandler onpointerout;
+    attribute EventHandler onpointerenter;
+    attribute EventHandler onpointerleave;
+};

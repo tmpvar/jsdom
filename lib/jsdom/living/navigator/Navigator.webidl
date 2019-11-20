@@ -91,3 +91,8 @@ interface MimeType {
 interface mixin NavigatorConcurrentHardware {
   readonly attribute unsigned long long hardwareConcurrency;
 };
+
+// https://w3c.github.io/pointerevents/#extensions-to-the-navigator-interface
+partial interface Navigator {
+    readonly  attribute long maxTouchPoints;
+};
