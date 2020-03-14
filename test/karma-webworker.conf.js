@@ -6,7 +6,7 @@ const path = require("path");
 module.exports = config => {
   const options = {
     basePath: path.resolve(__dirname, ".."),
-    frameworks: ["mocha-webworker", "browserify"],
+    frameworks: ["mocha-webworker", "browserify", "child-process"],
 
     files: [
       {
@@ -20,6 +20,12 @@ module.exports = config => {
         // make sure that this pattern does not match the entry point test/index.js
         // otherwise we hit node-browserify#1003
         pattern: "test/!(web-platform-tests)/**",
+        served: true,
+        watched: true,
+        included: false
+      },
+      {
+        pattern: "test/web-platform-tests/@(to-run.yaml|wpt-manifest.json)",
         served: true,
         watched: true,
         included: false
@@ -39,14 +45,21 @@ module.exports = config => {
     browserify: {
       debug: true,
       configure(bundle) {
-        bundle.ignore("fs");
-        // TODO: support WPTs in browsers.
-        bundle.ignore("./test/web-platform-tests/run-wpts.js");
+        // TODO: support to-upstream WPTs in browsers.
         bundle.ignore("./test/web-platform-tests/run-tuwpts.js");
+
+        bundle.ignore("./test/web-platform-tests/wpt-configs.js");
+        bundle.ignore("./test/web-platform-tests/*.json");
       }
     },
 
     client: {
+      childProcess: {
+        path: "test/web-platform-tests/karma-server.js",
+        args: [],
+        options: {}
+      },
+
       mochaWebWorker: {
         // The "karma-browserify" plugin injects a script which contains the generated bundle, with an url
         // that looks like:

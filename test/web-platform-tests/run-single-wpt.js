@@ -3,20 +3,13 @@
 const path = require("path");
 const { URL } = require("url");
 const { specify } = require("mocha-sugar-free");
-const { inBrowserContext } = require("../util.js");
 const { JSDOM, VirtualConsole } = require("../../lib/api.js");
 const ResourceLoader = require("../../lib/jsdom/browser/resources/resource-loader");
 
 const reporterPathname = "/resources/testharnessreport.js";
 
 module.exports = urlPrefixFactory => {
-  if (inBrowserContext()) {
-    return () => {
-      // TODO: browser support for running WPT
-    };
-  }
-
-  return (testPath, title = testPath, expectFail) => {
+  return (testPath, title = testPath, expectFail = false) => {
     specify({
       title,
       expectPromise: true,

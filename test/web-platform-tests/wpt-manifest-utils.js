@@ -37,6 +37,10 @@ exports.getPossibleTestFilePaths = manifest => {
 
 exports.readManifest = filename => {
   const manifestString = fs.readFileSync(filename, { encoding: "utf-8" });
+  return exports.parseManifest(manifestString);
+};
+
+exports.parseManifest = manifestString => {
   const manifest = JSON.parse(manifestString);
 
   if (manifest.version !== EXPECTED_MANIFEST_VERSION) {

@@ -4,10 +4,12 @@ const fs = require("fs");
 const jsYAML = require("js-yaml");
 const { Minimatch } = require("minimatch");
 const { describe, specify, before } = require("mocha-sugar-free");
-const { readManifest, getPossibleTestFilePaths } = require("./wpt-manifest-utils.js");
+const { readManifest, parseManifest, getPossibleTestFilePaths } = require("./wpt-manifest-utils.js");
 const startWPTServer = require("./start-wpt-server.js");
+const { inBrowserContext, karmaPort, wptServerTimeout } = require("../util.js");
 const { Canvas } = require("../../lib/jsdom/utils.js");
 
+const isInBrowser = inBrowserContext();
 const validReasons = new Set([
   "fail",
   "fail-slow",
@@ -20,19 +22,38 @@ const validReasons = new Set([
   "needs-canvas"
 ]);
 
-const nodeMajor = Number(process.versions.node.split(".")[0]);
+const nodeMajor = typeof process.versions.node === "string" ?
+  Number(process.versions.node.split(".")[0]) :
+  null;
 const hasNode10 = nodeMajor >= 10;
 const hasNode11 = nodeMajor >= 11;
 const hasNode12 = nodeMajor >= 12;
 const hasCanvas = Boolean(Canvas);
 
 const manifestFilename = path.resolve(__dirname, "wpt-manifest.json");
-const manifest = readManifest(manifestFilename);
-const possibleTestFilePaths = getPossibleTestFilePaths(manifest);
-
 const toRunFilename = path.resolve(__dirname, "to-run.yaml");
-const toRunString = fs.readFileSync(toRunFilename, { encoding: "utf-8" });
-const toRunDocs = jsYAML.safeLoadAll(toRunString, { filename: toRunFilename });
+
+let toRunString;
+let manifest;
+if (!isInBrowser) {
+  manifest = readManifest(manifestFilename);
+  toRunString = fs.readFileSync(toRunFilename, { encoding: "utf-8" });
+} else {
+  // eslint-disable-next-line no-undef
+  const xhr = new XMLHttpRequest();
+
+  // This needs to use sync XHR, otherwise `toRunDocs` and `manifest`
+  // would be `undefined` when the `describe` callback executes:
+  xhr.open("GET", `http://localhost:${karmaPort}/base/test/web-platform-tests/to-run.yaml`, false);
+  xhr.send();
+  toRunString = xhr.responseText;
+
+  xhr.open("GET", `http://localhost:${karmaPort}/base/test/web-platform-tests/wpt-manifest.json`, false);
+  xhr.send();
+  manifest = parseManifest(xhr.responseText);
+}
+const toRunDocs = jsYAML.safeLoadAll(toRunString, null, { filename: toRunFilename });
+const possibleTestFilePaths = getPossibleTestFilePaths(manifest);
 
 const minimatchers = new Map();
 
@@ -40,13 +61,13 @@ checkToRun();
 
 let wptServerURL;
 const runSingleWPT = require("./run-single-wpt.js")(() => wptServerURL);
-before({ timeout: 30 * 1000 }, () => {
-  return startWPTServer({ toUpstream: false }).then(url => {
-    wptServerURL = url;
-  });
+const wptServerPromise = startWPTServer({ toUpstream: false }).then(url => {
+  wptServerURL = url;
 });
 
 describe("web-platform-tests", () => {
+  before({ timeout: wptServerTimeout }, () => wptServerPromise);
+
   for (const toRunDoc of toRunDocs) {
     describe(toRunDoc.DIR, () => {
       for (const testFilePath of possibleTestFilePaths) {
@@ -90,7 +111,7 @@ function checkToRun() {
       throw new Error(`DIR entries must not end with a slash: saw "${doc.DIR}"`);
     }
 
-    if (!fs.existsSync(path.resolve(__dirname, "tests", doc.DIR))) {
+    if (!isInBrowser && !fs.existsSync(path.resolve(__dirname, "tests", doc.DIR))) {
       throw new Error(`The directory "${doc.DIR}" does not exist`);
     }
 

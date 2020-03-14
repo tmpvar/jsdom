@@ -4,26 +4,36 @@ const dns = require("dns");
 const path = require("path");
 const util = require("util");
 const childProcess = require("child_process");
-const requestHead = require("request-promise-native").head;
+const request = require("request-promise-native");
 const { inBrowserContext } = require("../util.js");
+const { configPaths, configs } = require("./wpt-configs.js");
 
-const dnsLookup = util.promisify(dns.lookup);
-
+const dnsLookup = !inBrowserContext() && util.promisify(dns.lookup);
 const wptDir = path.resolve(__dirname, "tests");
-
-const configPaths = {
-  default: path.resolve(__dirname, "wpt-config.json"),
-  toUpstream: path.resolve(__dirname, "tuwpt-config.json")
-};
-
-const configs = {
-  default: require(configPaths.default),
-  toUpstream: require(configPaths.toUpstream)
-};
 
 module.exports = ({ toUpstream = false } = {}) => {
   if (inBrowserContext()) {
-    return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      // eslint-disable-next-line no-undef
+      const xhr = new XMLHttpRequest();
+
+      console.log(`Sending request to start WPT server`);
+      xhr.open("GET", `http://web-platform.test:8000/start-wpt-server?to-upstream=${toUpstream}`);
+
+      xhr.addEventListener("load", () => {
+        const { responseText } = xhr;
+
+        if (xhr.status >= 300) {
+          reject(new Error(`Received response: Failed to start server: ${responseText}`));
+          return;
+        }
+
+        console.log(`Received response: WPT server at ${responseText} is up!`);
+        resolve(responseText);
+      });
+      xhr.addEventListener("error", reject);
+      xhr.send();
+    });
   }
 
   const configType = toUpstream ? "toUpstream" : "default";
@@ -41,7 +51,7 @@ module.exports = ({ toUpstream = false } = {}) => {
 
       return new Promise((resolve, reject) => {
         python.on("error", e => {
-          reject(new Error("Error starting python server process:", e.message));
+          reject(new Error(`Error starting python server process: ${e.message}`));
         });
 
         resolve(Promise.all([
@@ -66,12 +76,11 @@ module.exports = ({ toUpstream = false } = {}) => {
 };
 
 function pollForServer(url) {
-  return requestHead(url, { strictSSL: false })
+  return request.head(url, { strictSSL: false })
     .then(() => {
       console.log(`WPT server at ${url} is up!`);
       return url;
-    })
-    .catch(err => {
+    }, err => {
       console.log(`WPT server at ${url} is not up yet (${err.message}); trying again`);
       return new Promise(resolve => {
         setTimeout(() => resolve(pollForServer(url)), 500);
