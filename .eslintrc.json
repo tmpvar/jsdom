@@ -8,6 +8,7 @@
     "ecmaVersion": 2019
   },
   "plugins": [
+    "import",
     "jsdom-internal"
   ],
   "rules": {
@@ -284,6 +285,15 @@
     "symbol-description": "error",
     "template-curly-spacing": ["error", "never"],
     "yield-star-spacing": ["error", "after"],
+
+    // Imports
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "ignorePackages": true
+      }
+    ],
 
     // Custom rules
     "jsdom-internal/hook-super-invocation": ["error",
