@@ -210,7 +210,7 @@ describe("level2/style", { skipIfBrowser: true }, () => {
           return delay(100); // HACK: style imports haven"t been processed yet, different bug
         }).then(() => {
           var style = window.getComputedStyle(window.document.body);
-          assert.equal(style.color, "red", "computed color of body is red");
+          assert.equal(style.color, "rgb(255, 0, 0)", "computed color of body is red");
           s.close();
         });
       });
@@ -242,7 +242,7 @@ describe("level2/style", { skipIfBrowser: true }, () => {
         window.onload = () => {
           var div = window.document.getElementsByTagName("div")[0];
           var style = window.getComputedStyle(div);
-          assert.equal(style.color, "red", "computed color of div is red");
+          assert.equal(style.color, "rgb(255, 0, 0)", "computed color of div is red");
           s.close();
           resolve();
         };
@@ -270,7 +270,7 @@ describe("level2/style", { skipIfBrowser: true }, () => {
       @media print { .citation { color: red; } }</style></head>
       <body><p class=\"citation\">Hello</p></body></html>`);
     var style = window.getComputedStyle(window.document.querySelector(".citation"));
-    assert.equal(style.color, "blue", "computed color of p is blue");
+    assert.equal(style.color, "rgb(0, 0, 255)", "computed color of p is blue");
   });
 
   specify("getComputedStyleWithKeyframeRules", () => {
@@ -280,6 +280,54 @@ describe("level2/style", { skipIfBrowser: true }, () => {
     assert.doesNotThrow(function () {
       window.getComputedStyle(window.document.querySelector("p"));
     });
+  });
+
+  specify("getComputedStyleWithColorInheritance1", () => {
+    const { window } = new JSDOM(`
+      <html><head><style>div { color: green; }</style></head>
+      <body><div><span>hello</span></div></body></html>`);
+    var style = window.getComputedStyle(window.document.querySelector("span"));
+    assert.equal(style.color, "rgb(0, 128, 0)", "computed color of span is green");
+  });
+
+  specify("getComputedStyleWithColorInheritance2", () => {
+    const { window } = new JSDOM(`
+      <html><head><style>div { color: green; }</style></head>
+      <body><div><a href="foobar"><span>hello</span></a></div></body></html>`);
+    var style = window.getComputedStyle(window.document.querySelector("span"));
+    assert.equal(style.color, "rgb(0, 0, 238)", "computed color of span is default link color");
+  });
+
+  specify("getComputedStyleWithFillInheritance1", () => {
+    const { window } = new JSDOM(`
+      <html><head><style></style></head>
+      <body><div><svg></svg></div></body></html>`);
+    var style = window.getComputedStyle(window.document.querySelector("svg"));
+    assert.equal(style.fill, "rgb(0, 0, 0)", "computed color of svg is default");
+  });
+
+  specify("getComputedStyleWithFillInheritance2", () => {
+    const { window } = new JSDOM(`
+      <html><head><style>div { fill: green; }</style></head>
+      <body><div><svg></svg></div></body></html>`);
+    var style = window.getComputedStyle(window.document.querySelector("svg"));
+    assert.equal(style.fill, "rgb(0, 128, 0)", "computed color of svg is green");
+  });
+
+  specify("getComputedStyleWithStrokeInheritance1", () => {
+    const { window } = new JSDOM(`
+      <html><head><style></style></head>
+      <body><div><svg></svg></div></body></html>`);
+    var style = window.getComputedStyle(window.document.querySelector("svg"));
+    assert.equal(style.stroke, "none", "computed color of svg is default");
+  });
+
+  specify("getComputedStyleWithStrokeInheritance2", () => {
+    const { window } = new JSDOM(`
+      <html><head><style>div { stroke: green; }</style></head>
+      <body><div><svg></svg></div></body></html>`);
+    var style = window.getComputedStyle(window.document.querySelector("svg"));
+    assert.equal(style.stroke, "rgb(0, 128, 0)", "computed color of svg is green");
   });
 
   specify("setStyleToInvalidCSSSyntax", () => {

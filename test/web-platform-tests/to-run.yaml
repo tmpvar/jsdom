@@ -940,14 +940,11 @@ template-element/template-content-hierarcy.html: [fail, "We do not implement htt
 
 DIR: html/semantics/selectors
 
-pseudo-classes/checked-type-change.html: [fail, CSS computed style computation]
 pseudo-classes/dir-html-input-dynamic-text.html: [fail, need nwsapi fix]
 pseudo-classes/focus-autofocus.html: [timeout, Unknown]
 pseudo-classes/focus.html: [timeout, Unknown]
 pseudo-classes/indeterminate-radio.html: [fail, CSS computed style computation]
 pseudo-classes/indeterminate-type-change.html: [fail, CSS computed style computation]
-pseudo-classes/inrange-outofrange-type-change.html: [fail, CSS computed style computation]
-pseudo-classes/placeholder-shown-type-change.html: [fail, CSS computed style computation]
 pseudo-classes/readwrite-readonly-type-change.html: [fail, CSS computed style computation]
 pseudo-classes/readwrite-readonly.html: [fail, Unknown]
 pseudo-classes/required-optional-hidden.html: [fail, CSS computed style computation]

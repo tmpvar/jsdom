@@ -150,9 +150,7 @@ describe("API: resource loading configuration", { skipIfBrowser: true }, () => {
 
       await assertLoaded(element);
 
-      // I think this should actually be "rgb(0, 0, 255)" per spec. It's fine to change the test in the future if we
-      // fix that.
-      assert.strictEqual(dom.window.getComputedStyle(dom.window.document.body).color, "blue");
+      assert.strictEqual(dom.window.getComputedStyle(dom.window.document.body).color, "rgb(0, 0, 255)");
     });
 
     it("should download and run scripts, if runScripts: \"dangerously\" is also set", { slow: 500 }, async () => {
