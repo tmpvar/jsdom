@@ -73,7 +73,7 @@ dictionary ScrollIntoViewOptions : ScrollOptions {
 partial interface Element {
   DOMRectList getClientRects();
   [NewObject] DOMRect getBoundingClientRect();
-//  void scrollIntoView(optional (boolean or ScrollIntoViewOptions) arg);
+  void scrollIntoView(optional (boolean or ScrollIntoViewOptions) arg);
 //  void scroll(optional ScrollToOptions options);
 //  void scroll(unrestricted double x, unrestricted double y);
 //  void scrollTo(optional ScrollToOptions options);
