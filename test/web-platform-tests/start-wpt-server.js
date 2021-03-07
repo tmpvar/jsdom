@@ -30,39 +30,45 @@ module.exports = ({ toUpstream = false } = {}) => {
   const configPath = configPaths[configType];
   const config = configs[configType];
 
-  return dnsLookup("web-platform.test").then(
-    () => {
-      const configArg = path.relative(path.resolve(wptDir), configPath);
-      const args = ["./wpt.py", "serve", "--config", configArg];
-      const subprocess = childProcess.spawn("python", args, {
-        cwd: wptDir,
-        stdio: "inherit"
-      });
+  const configArg = path.relative(path.resolve(wptDir), configPath);
+  const args = ["./wpt.py", "serve", "--config", configArg];
+  let subprocess;
 
-      return new Promise((resolve, reject) => {
-        subprocess.on("error", e => {
-          reject(new Error("Error starting python server process:", e.message));
-        });
+  const result = new Promise((resolve, reject) => {
+    subprocess = childProcess.spawn("python", args, {
+      cwd: wptDir,
+      stdio: "inherit"
+    });
 
-        resolve(Promise.all([
+    subprocess.on("error", e => {
+      reject(new Error(`Error starting python server process: ${e.message}`));
+    });
+
+    process.on("exit", () => {
+      // Python doesn't register a default handler for SIGTERM and it doesn't run __exit__() methods of context
+      // managers when it gets that signal. Using SIGINT avoids this problem.
+      subprocess.kill("SIGINT");
+    });
+
+    dnsLookup("web-platform.test")
+      .then(
+        () => Promise.all([
           pollForServer(`http://${config.browser_host}:${config.ports.http[0]}/`),
           pollForServer(`https://${config.browser_host}:${config.ports.https[0]}/`),
           pollForServer(`http://${config.browser_host}:${config.ports.ws[0]}/`),
           pollForServer(`https://${config.browser_host}:${config.ports.wss[0]}/`)
-        ]).then(urls => ({ urls, subprocess })));
+        ]),
+        () => {
+          throw new Error("Host entries not present for web platform tests. See " +
+                          "https://github.com/web-platform-tests/wpt#running-the-tests");
+        }
+      )
+      .then(urls => resolve(urls[0]), reject);
+  });
 
-        process.on("exit", () => {
-          // Python doesn't register a default handler for SIGTERM and it doesn't run __exit__() methods of context
-          // managers when it gets that signal. Using SIGINT avoids this problem.
-          subprocess.kill("SIGINT");
-        });
-      });
-    },
-    () => {
-      throw new Error("Host entries not present for web platform tests. See " +
-                      "https://github.com/web-platform-tests/wpt#running-the-tests");
-    }
-  );
+  result.child = subprocess;
+
+  return result;
 };
 
 function pollForServer(url, lastLogTime = Date.now()) {
