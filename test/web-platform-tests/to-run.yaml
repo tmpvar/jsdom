@@ -113,7 +113,6 @@ CustomElementRegistry.html: [fail, webidl2js doesn't deal well with tests using 
 Document-createElement.html: [fail, :defined is not defined and throws]
 HTMLElement-attachInternals.html: [fail, Not implemented]
 HTMLElement-constructor.html: [fail, webidl2js doesn't deal well with tests using Proxies to verify properties access]
-adopted-callback.html: [fail, "Failing test due to https://github.com/whatwg/dom/issues/813"]
 attribute-changed-callback.html: [fail, attributeChangedCallback doesn't work with CSSStyleDeclaration, https://github.com/jsdom/cssstyle/issues/113]
 custom-element-reaction-queue.html: [fail, document.write() implementation is not spec compliant]
 custom-element-registry/per-global.html: [fail, iframe location related issue]
@@ -200,7 +199,6 @@ ParentNode-querySelector-All.html: [fail, ::slotted() pseudo-class is not suppor
 ParentNode-replaceChildren.html: [fail, Not implemented]
 ProcessingInstruction-escapes-1.xhtml: [fail, Unknown]
 Text-constructor.html: [fail, Unknown]
-adoption.window.html: [fail, "We do not implement https://github.com/whatwg/dom/pull/754 due to https://github.com/whatwg/dom/issues/813"]
 aria-attribute-reflection.tentative.html: [fail, Unknown]
 aria-element-reflection.tentative.html: [fail, WAI-ARIA not implemented]
 remove-and-adopt-thcrash.html: [fail, window.open not implemented]
@@ -930,8 +928,6 @@ script-type-and-language-js.html: [fail, Our script execution timing is off; see
 ---
 
 DIR: html/semantics/scripting-1/the-template-element
-
-template-element/template-content-hierarcy.html: [fail, "We do not implement https://github.com/whatwg/dom/pull/754 due to https://github.com/whatwg/dom/issues/813"]
 
 ---
 
