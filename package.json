@@ -89,7 +89,7 @@
     "./lib/jsdom/living/websockets/WebSocket-impl.js": "./lib/jsdom/living/websockets/WebSocket-impl-browser.js"
   },
   "scripts": {
-    "prepare": "yarn convert-idl && yarn generate-js-globals",
+    "prepare": "yarn convert-idl",
     "pretest": "yarn prepare && yarn init-wpt",
     "test-wpt": "mocha test/web-platform-tests/run-wpts.js",
     "test-tuwpt": "mocha test/web-platform-tests/run-tuwpts.js",
@@ -106,8 +106,7 @@
     "update-authors": "git log --format=\"%aN <%aE>\" | sort -f | uniq > AUTHORS.txt",
     "benchmark": "node ./benchmark/runner",
     "benchmark-browser": "node ./benchmark/runner --bundle",
-    "convert-idl": "node ./scripts/webidl/convert.js",
-    "generate-js-globals": "node ./scripts/generate-js-globals.js"
+    "convert-idl": "node ./scripts/webidl/convert.js"
   },
   "main": "./lib/api.js",
   "engines": {
