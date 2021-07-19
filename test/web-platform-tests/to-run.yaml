@@ -119,6 +119,20 @@ window-screen-width.html: [fail, Test not applicable - no output device]
 
 ---
 
+DIR: css/geometry
+
+DOMMatrix*: [fail, not implemented]
+DOMPoint*: [fail, not implemented]
+DOMQuad*: [fail, not implemented]
+DOMRectList.html: [fail, not implemented]
+WebKitCSSMatrix.html: [fail, not implemented]
+historical.html: [fail, needs DOMPoint DOMQuad DOMMatrix]
+idlharness.any.html: [fail, Depends on Fetch]
+spec-examples.html: [fail, needs DOMPoint DOMQuad DOMMatrix]
+structured-serialization.html: [fail, need MessageChannel]
+
+---
+
 DIR: custom-elements
 
 CustomElementRegistry.html:
@@ -1242,6 +1256,20 @@ untriaged/styles/test-005.html: [fail, offsetTop not implemented]
 untriaged/styles/test-008.html: [fail, offsetTop and offsetHeight not implemented]
 untriaged/user-interaction/editing/inheritance-of-content-editable-001.html: [fail, contentEditable is not implemented]
 untriaged/user-interaction/ranges-and-selections/test-002.html: [fail, https://github.com/w3c/selection-api/issues/114]
+
+---
+
+DIR: svg/types/scripted
+
+"**/*.svg": [timeout, We do not yet support running SVG WPTs]
+SVGAnimatedAngle*: [fail, Not implemented]
+SVGAnimatedBoolean*: [fail, Not implemented]
+SVGAnimatedEnumeration*: [fail, Not implemented]
+SVGAnimatedInteger*: [fail, Not implemented]
+SVGAnimatedLength*: [fail, Not implemented]
+SVGAnimatedNumber*: [fail, Not implemented]
+SVGGraphicsElement.getBBox-*: [fail, Not implemented]
+SVGLength*: [fail, Not implemented]
 
 ---
 

@@ -2,8 +2,7 @@
 [Exposed=Window]
 interface SVGElement : Element {
 
-  // TODO: implement reflection in webidl2js
-  [SameObject] readonly attribute SVGAnimatedString className;
+  [SameObject, Reflect="class"] readonly attribute SVGAnimatedString className;
 
   readonly attribute SVGSVGElement? ownerSVGElement;
   readonly attribute SVGElement? viewportElement;

@@ -1,0 +1,40 @@
+<!doctype html>
+<title>SVGRect interface</title>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script>
+"use strict";
+
+test(() => {
+  const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  const rect = svgElement.createSVGRect();
+
+  assert_equals(rect.x, 0, "blank rect's x");
+  assert_equals(rect.y, 0, "blank rect's y");
+  assert_equals(rect.width, 0, "new rect's width");
+  assert_equals(rect.height, 0, "new rect's height");
+
+  rect.x = 1;
+  assert_equals(rect.x, 1, "x after setting x");
+  assert_equals(rect.y, 0, "y after setting x");
+  assert_equals(rect.width, 0, "width after setting x");
+  assert_equals(rect.height, 0, "height after setting x");
+
+  rect.y = -1;
+  assert_equals(rect.y, -1);
+  rect.width = -1;
+  assert_equals(rect.width, -1);
+  rect.height = -1;
+  assert_equals(rect.height, -1);
+
+  // Chrome and Firefox allow NaN and Infinity, but Firefox forbids them.
+  // Follow Firefox as its behavior makes more sense according to
+  // https://crbug.com/1230411.
+  assert_throws_js(TypeError, () => {
+    rect.height = NaN;
+  });
+  assert_throws_js(TypeError, () => {
+    rect.height = Infinity;
+  });
+}, "SVGSVGElement.createSVGRect()");
+</script>

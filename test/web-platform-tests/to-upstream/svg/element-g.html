@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<title>SVGGElement interface</title>
+<link rel="author" title="Timothy Gu" href="mailto:timothygu99@gmail.com">
+<link rel="help" href="https://svgwg.org/svg2-draft/struct.html#InterfaceSVGGElement">
+
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+
+<svg id="svg">
+  <g id="g">
+    <circle id="myCircle" cx="0" cy="0" r="5" />
+  </g>
+</svg>
+
+<script>
+"use strict";
+
+test(() => {
+  const svg = document.getElementById("svg");
+  const g = document.getElementById("g");
+  assert_true(g instanceof SVGGElement);
+  assert_true(g instanceof SVGGraphicsElement);
+  assert_equals(g.ownerSVGElement, svg);
+  assert_equals(g.viewportElement, svg);
+}, "Basic properties");
+
+test(() => {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  assert_true(g instanceof SVGGElement);
+  assert_true(g instanceof SVGGraphicsElement);
+  assert_equals(g.ownerSVGElement, null);
+  assert_equals(g.viewportElement, null);
+}, "Detached");
+
+</script>
+

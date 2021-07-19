@@ -22,10 +22,15 @@ test(() => {
   const animStr = svg.className;
   assert_equals(animStr.baseVal, "");
   assert_equals(animStr.animVal, "");
+  assert_equals(svg.getAttribute("class"), null);
   animStr.baseVal = "class";
   assert_equals(animStr.baseVal, "class");
   assert_equals(animStr.animVal, "class");
   assert_equals(svg.getAttribute("class"), "class");
+  animStr.baseVal = "";
+  assert_equals(animStr.baseVal, "");
+  assert_equals(animStr.animVal, "");
+  assert_equals(svg.getAttribute("class"), "");
 }, "Setting baseStr");
 
 test(() => {
@@ -33,10 +38,15 @@ test(() => {
   const animStr = svg.className;
   assert_equals(animStr.baseVal, " abc  def  ");
   assert_equals(animStr.animVal, " abc  def  ");
+  assert_equals(svg.getAttribute("class"), " abc  def  ");
   animStr.baseVal = "abc def";
   assert_equals(animStr.baseVal, "abc def");
   assert_equals(animStr.animVal, "abc def");
   assert_equals(svg.getAttribute("class"), "abc def");
+  animStr.baseVal = "";
+  assert_equals(animStr.baseVal, "");
+  assert_equals(animStr.animVal, "");
+  assert_equals(svg.getAttribute("class"), "");
 }, "Setting baseStr of an element declared via HTML");
 
 </script>

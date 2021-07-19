@@ -22,7 +22,11 @@ interface SVGSVGElement : SVGGraphicsElement {
   // SVGAngle createSVGAngle();
   // DOMPoint createSVGPoint();
   // DOMMatrix createSVGMatrix();
-  // DOMRect createSVGRect();
+
+  // SVG 2 currently says to return DOMRect, but
+  // https://github.com/w3c/svgwg/issues/706 says otherwise.
+  SVGRect createSVGRect();
+
   // SVGTransform createSVGTransform();
   // SVGTransform createSVGTransformFromMatrix(DOMMatrixReadOnly matrix);
 
@@ -36,6 +40,6 @@ interface SVGSVGElement : SVGGraphicsElement {
   void forceRedraw();
 };
 
-// SVGSVGElement includes SVGFitToViewBox;
+SVGSVGElement includes SVGFitToViewBox;
 // SVGSVGElement includes SVGZoomAndPan;
 SVGSVGElement includes WindowEventHandlers;

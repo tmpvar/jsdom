@@ -25,7 +25,7 @@ test(() => {
   assert_array_equals(list, ["abc", "def"]);
   assert_equals(list.numberOfItems, 2);
   assert_equals(svg.getAttribute("requiredExtensions"), "abc\r\ndef\f");
-  svg.requiredExtensions[1] = svg.requiredExtensions[1];
+  svg.requiredExtensions[1] = svg.requiredExtensions[1]; // eslint-disable-line no-self-assign
   assert_equals(svg.getAttribute("requiredExtensions"), "abc def");
 }, "Synchronization");
 

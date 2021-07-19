@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<title>SVGSymbolElement interface</title>
+<link rel="author" title="Timothy Gu" href="mailto:timothygu99@gmail.com">
+<link rel="help" href="https://svgwg.org/svg2-draft/struct.html#InterfaceSVGSymbolElement">
+
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+
+<svg id="svg">
+  <symbol id="circ" viewBox="1 2 5 6">
+    <g id="g">
+      <circle id="myCircle" cx="0" cy="0" r="5" />
+    </g>
+  </symbol>
+</svg>
+
+<script>
+"use strict";
+
+test(() => {
+  const svg = document.getElementById("svg");
+  const sym = document.getElementById("circ");
+  assert_true(sym instanceof SVGSymbolElement);
+  assert_true(sym instanceof SVGGraphicsElement);
+  assert_equals(sym.ownerSVGElement, svg);
+  assert_equals(sym.viewportElement, svg);
+
+  assert_true(sym.viewBox instanceof SVGAnimatedRect);
+  assert_equals(sym.viewBox.baseVal.x, 1);
+  assert_equals(sym.viewBox.baseVal.y, 2);
+  assert_equals(sym.viewBox.baseVal.width, 5);
+  assert_equals(sym.viewBox.baseVal.height, 6);
+}, "Basic properties");
+
+test(() => {
+  const svg = document.getElementById("svg");
+  const sym = document.getElementById("circ");
+  const g = document.getElementById("g");
+  const circ = document.getElementById("myCircle");
+  assert_equals(g.ownerSVGElement, svg);
+  assert_equals(g.viewportElement, sym);
+  assert_equals(circ.ownerSVGElement, svg);
+  assert_equals(circ.viewportElement, sym);
+}, "Viewport of children");
+
+test(() => {
+  const sym = document.createElementNS("http://www.w3.org/2000/svg", "symbol");
+  assert_true(sym instanceof SVGSymbolElement);
+  assert_true(sym instanceof SVGGraphicsElement);
+  assert_equals(sym.ownerSVGElement, null);
+  assert_equals(sym.viewportElement, null);
+}, "Detached");
+
+</script>
