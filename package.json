@@ -89,12 +89,12 @@
     "./lib/jsdom/living/websockets/WebSocket-impl.js": "./lib/jsdom/living/websockets/WebSocket-impl-browser.js"
   },
   "scripts": {
-    "prepare": "yarn convert-idl && yarn generate-js-globals",
+    "prepare": "yarn convert-idl",
     "pretest": "yarn prepare && yarn init-wpt",
     "test-wpt": "mocha test/web-platform-tests/run-wpts.js",
     "test-tuwpt": "mocha test/web-platform-tests/run-tuwpts.js",
     "test-mocha": "mocha",
-    "test-api": "mocha test/api",
+    "test-api": "mocha test/api && node ./test/api/js-globals-aggregateError.js && node ./test/api/js-globals-globalThis.js",
     "test": "mocha test/index.js",
     "test-browser-iframe": "karma start test/karma.conf.js",
     "test-browser-worker": "karma start test/karma-webworker.conf.js",
@@ -106,8 +106,7 @@
     "update-authors": "git log --format=\"%aN <%aE>\" | sort -f | uniq > AUTHORS.txt",
     "benchmark": "node ./benchmark/runner",
     "benchmark-browser": "node ./benchmark/runner --bundle",
-    "convert-idl": "node ./scripts/webidl/convert.js",
-    "generate-js-globals": "node ./scripts/generate-js-globals.js"
+    "convert-idl": "node ./scripts/webidl/convert.js"
   },
   "main": "./lib/api.js",
   "engines": {

@@ -4,7 +4,7 @@ const { describe, it } = require("mocha-sugar-free");
 const { delay } = require("../util.js");
 
 const { JSDOM, VirtualConsole } = require("../..");
-const jsGlobals = Object.keys(require("../../lib/jsdom/browser/js-globals.json"));
+const jsGlobals = Object.keys(require("../../lib/jsdom/browser/js-globals"));
 
 // Node 10 has a bug with the vm module that causes some global-related tests to fail.
 const hasNode10 = process.versions.node && Number(process.versions.node.split(".")[0]) === 10;
