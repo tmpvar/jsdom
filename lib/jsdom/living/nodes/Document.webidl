@@ -50,7 +50,6 @@ enum DocumentReadyState { "loading", "interactive", "complete" };
 // We don't support SVGScriptElement yet
 // typedef (HTMLScriptElement or SVGScriptElement) HTMLOrSVGScriptElement;
 
-[LegacyOverrideBuiltins]
 partial interface Document {
   // resource metadata management
   [PutForwards=href, LegacyUnforgeable] readonly attribute Location? location;
@@ -61,7 +60,6 @@ partial interface Document {
   readonly attribute DocumentReadyState readyState;
 
   // DOM tree accessors
-//  getter object (DOMString name);
   [CEReactions] attribute DOMString title;
   [CEReactions] attribute DOMString dir;
   [CEReactions] attribute HTMLElement? body;
