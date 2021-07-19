@@ -2,8 +2,10 @@
 const fs = require("fs");
 const path = require("path");
 
+const parseDataURL = require("data-urls");
 const { assert } = require("chai");
 const { describe, specify } = require("mocha-sugar-free");
+const { PNG } = require("pngjs");
 
 const { JSDOM } = require("../..");
 const { isCanvasInstalled } = require("../util.js");
@@ -97,9 +99,17 @@ describe("htmlcanvaselement", () => {
       ctx.stroke();
       ctx.closePath();
 
-      const fullPath = path.resolve(__dirname, "files/expected-canvas.txt");
-      const expected = fs.readFileSync(fullPath, { encoding: "utf-8" }).trim();
-      assert.strictEqual(canvas.toDataURL(), expected);
+      const fullPath = path.resolve(__dirname, "files/expected-canvas.png");
+      const expectedPNG = fs.readFileSync(fullPath);
+      const expectedImg = PNG.sync.read(expectedPNG);
+
+      const gotDataURL = parseDataURL(canvas.toDataURL());
+      const gotPNG = gotDataURL.body;
+      const gotImg = PNG.sync.read(gotPNG);
+
+      assert.strictEqual(gotImg.width, expectedImg.width, "width");
+      assert.strictEqual(gotImg.height, expectedImg.height, "height");
+      assert.strictEqual(Buffer.compare(expectedImg.data, gotImg.data), 0, "byte-level comparison");
       t.done();
     },
     { async: true }

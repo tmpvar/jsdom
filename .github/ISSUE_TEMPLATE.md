@@ -1,6 +1,6 @@
 ### Basic info:
 
-- **Node.js version:** <!-- only v10 and above are supported -->
+- **Node.js version:** <!-- only v12 and above are supported -->
 - **jsdom version:** <!-- only v16 and above are supported -->
 
 ### Minimal reproduction case

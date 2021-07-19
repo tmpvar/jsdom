@@ -265,7 +265,6 @@ header-values-normalize.any.html: [fail, fetch is not defined]
 header-values.any.html: [fail, fetch is not defined]
 headers-basic.any.html: [fail, iterator prototype is wrong]
 headers-no-cors.any.html: [fail, Request is not defined]
-headers-record.any.html: [needs-node12, V8 bug fixed in Node 12 onward]
 
 ---
 
@@ -477,12 +476,6 @@ window-open-invalid-url.html: [fail, Unknown]
 window-open-noopener.html**: [fail-slow, Unknown]
 window-open-noreferrer.html: [fail, Depends on BroadcastChannel]
 window-properties.https.html:
-  "Value Property: NaN": [needs-node12, Unknown]
-  "Value Property: Infinity": [needs-node12, Unknown]
-  "Value Property: undefined": [needs-node12, Unknown]
-  "EventTarget method: addEventListener": [needs-node12, Unknown]
-  "EventTarget method: removeEventListener": [needs-node12, Unknown]
-  "EventTarget method: dispatchEvent": [needs-node12, Unknown]
   "Window method: createImageBitmap": [fail, Not implemented]
   "Window method: matchMedia": [fail, Not implemented]
   "Window readonly attribute: applicationCache": [fail, Not implemented]
@@ -951,8 +944,6 @@ css-module/**: [fail-slow, CSS modules and Worker not implemented]
 data-url.html: [timeout, Unknown]
 emptyish-script-elements.html: [fail, Unknown]
 evaluation-order-**worker.html: [fail, workers not implemented]
-evaluation-order-1-nothrow.html: [needs-node12, Test uses globalThis]
-evaluation-order-1.html: [needs-node12, Test uses globalThis]
 execution-timing/005.html: [fail, Unknown]
 execution-timing/006.html: [fail, Unknown]
 execution-timing/009.html: [fail, Unknown]
@@ -1145,7 +1136,6 @@ DIR: html/webappapis/dynamic-markup-insertion/document-writeln
 
 DIR: html/webappapis/microtask-queuing
 
-queue-microtask.any.html: [needs-node12, Node v10 doesn't have queueMicrotask so we use the nextTick queue there which has the wrong ordering semantics with regard to promises]
 queue-microtask.window.html: [fail-slow, Unknown interaction with Mutation Observers]
 
 ---
@@ -1292,11 +1282,9 @@ unload-a-document/*: [timeout, Requires window.open]
 
 DIR: webstorage
 
-event_no_duplicates.html: [needs-node11, Earlier Node.js timers did not match browser behaviour, https://github.com/nodejs/node/pull/22842]
 storage_local_window_open.window.html: [timeout, Depends on window.open()]
 storage_session_window_noopener.window.html: [fail, Depends on BroadcastChannel]
 storage_session_window_open.window.html: [timeout, Depends on window.open()]
-storage_string_conversion.window.html: [needs-node10, function.toString() does not use correct formatting in earlier versions, https://github.com/nodejs/node/issues/20459]
 symbol-props.window.html: [fail, Unknown]
 
 ---

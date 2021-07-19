@@ -8,22 +8,23 @@ const benchmarks = require(".");
 const fs = require("fs");
 const path = require("path");
 const { toFileUrl } = require("../lib/jsdom/utils");
+const yargs = require("yargs/yargs");
+const { hideBin } = require("yargs/helpers");
 
-const optimist = require("optimist")
+const { argv } = yargs(hideBin(process.argv))
   .usage("Run the jsdom benchmark suite")
-  .alias("s", "suites")
-  .string("s")
-  .describe("s", "suites that you want to run. ie: -s dom/construction/createElement,dom/foo")
-  .describe("bundle", "generate the JavaScript bundle required to run benchmarks in a browser")
-  .alias("h", "help")
-  .describe("h", "show the help");
+  .option("suites", {
+    type: "array",
+    alias: "s",
+    describe: "suites that you want to run, e.g.: dom/construction/createElement dom/foo"
+  })
+  .option("bundle", {
+    type: "boolean",
+    describe: "generate the JavaScript bundle required to run benchmarks in a browser"
+  })
+  .help();
 
-if (optimist.argv.help) {
-  optimist.showHelp();
-  return;
-}
-
-if (optimist.argv.bundle) {
+if (argv.bundle) {
   const bundle = require("browserify")({ debug: true });
   bundle.require(path.resolve(__dirname, ".."), { expose: "jsdom" });
   bundle.require(path.resolve(__dirname, "browser-runner.js"), { expose: "jsdom-browser-runner" });
@@ -40,8 +41,8 @@ if (optimist.argv.bundle) {
 }
 
 let suitesToRun;
-if (optimist.argv.suites) {
-  suitesToRun = pathToSuites(benchmarks, optimist.argv.suites.trim().split(/,/));
+if (argv.suites) {
+  suitesToRun = pathToSuites(benchmarks, argv.suites);
 } else {
   suitesToRun = pathToSuites(benchmarks);
 }

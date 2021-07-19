@@ -6,10 +6,6 @@ const { delay } = require("../util.js");
 const { JSDOM, VirtualConsole } = require("../..");
 const jsGlobals = Object.keys(require("../../lib/jsdom/browser/js-globals.json"));
 
-// Node 10 has a bug with the vm module that causes some global-related tests to fail.
-const hasNode10 = process.versions.node && Number(process.versions.node.split(".")[0]) === 10;
-
-
 describe("API: runScripts constructor option", () => {
   describe("<script>s and eval()", () => {
     it("should not execute any scripts by default", () => {
@@ -124,8 +120,7 @@ describe("API: runScripts constructor option", () => {
     });
   });
 
-  const jsSpecGlobalsDescribe = hasNode10 ? describe.skip : describe;
-  jsSpecGlobalsDescribe("JS spec globals", () => {
+  describe("JS spec globals", () => {
     it("should include aliased globals by default", () => {
       // Sanity check that our global-generation process hasn't broken.
       assert.include(jsGlobals, "TypeError");
