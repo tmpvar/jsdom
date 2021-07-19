@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Computed visibility in nominal case for inline styles</title>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+
+<!-- Test for https://github.com/jsdom/jsdom/issues/3182 -->
+
+<body>
+  <div id="hiddenDiv" style="visibility: hidden;">Hello, Ronron!</div>
+</body>
+
+<script>
+"use strict";
+
+
+test(() => {
+  const element = document.querySelector("body");
+  assert_equals(getComputedStyle(element).visibility, "visible");
+}, "Sanity check: getComputedStyle returns apparent visibility");
+
+test(() => {
+  const element = document.querySelector("#hiddenDiv");
+  assert_equals(getComputedStyle(element).visibility, "hidden");
+}, "Real check: getComputedStyle returns hidden visibility for inline styles");
+
+</script>
