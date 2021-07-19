@@ -1245,6 +1245,21 @@ untriaged/user-interaction/ranges-and-selections/test-002.html: [fail, https://g
 
 ---
 
+DIR: streams
+
+idlharness.any.html: [fail, Depends on fetch]
+readable-byte-streams/bad-buffers-and-views.any.html: [fail, Readable byte streams not implemented, Requires ability to transfer ArrayBuffers]
+readable-byte-streams/construct-byob-request.any.html: [fail, Readable byte streams not implemented]
+readable-byte-streams/enqueue-with-detached-buffer.window.html: [fail, Readable byte streams not implemented, Requires postMessage() as free function, Requires ability to detect detached ArrayBuffers]
+readable-byte-streams/general.any.html: [fail, Readable byte streams not implemented]
+readable-byte-streams/non-transferable-buffers.any.html: [fail, Readable byte streams not implemented, Requires ability to detect non-transferable ArrayBuffers]
+readable-streams/async-iterator.any.html: [fail, AsyncIterator prototype is wrong]
+transferable/**: [fail-slow, Unknown and Depends on postMessage() supporting transferlists]
+writable-streams/close.any.html:
+  "ready promise should be initialised as fulfilled for a writer on a closed stream": [fail, Promise prototype is wrong]
+
+---
+
 DIR: uievents
 
 idlharness.window.html: [fail, Depends on fetch]
@@ -1362,7 +1377,6 @@ send-authentication-cors-setrequestheader-no-cred.htm: [fail, Unknown]
 send-blob-with-no-mime-type.html: [fail, Unknown]
 send-conditional-cors.htm: [timeout, Unknown]
 send-content-type-charset.htm: [fail-slow, bad test because not-yet-updated spec https://github.com/whatwg/xhr/issues/188]
-send-data-es-object.any.html: [fail, Unknown]
 send-data-sharedarraybuffer.any.html: [fail, Unknown]
 send-entity-body-document.htm: [timeout, https://github.com/jsdom/jsdom/issues/1833]
 send-entity-body-none.htm: [fail-slow, hard to get Node to not send Content-Length]

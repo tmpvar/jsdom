@@ -13,7 +13,7 @@ exports.getPossibleTestFilePaths = manifest => {
       if (Array.isArray(test[key])) {
         const fallbackPath = path === "" ? key : `${path}/${key}`;
 
-        for (const [curPath] of test[key].slice(1)) {
+        for (const [curPath, { jsshell }] of test[key].slice(1)) {
           const testPath = curPath === null ? fallbackPath : curPath;
 
           // Globally disable worker tests
@@ -24,6 +24,11 @@ exports.getPossibleTestFilePaths = manifest => {
           }
           // Globally disable testdriver tests
           if (test[key][1][1].testdriver) {
+            continue;
+          }
+
+          // Globally disable jsshell tests
+          if (jsshell) {
             continue;
           }
 

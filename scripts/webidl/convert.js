@@ -158,6 +158,7 @@ addDir("../../lib/jsdom/living/navigator");
 addDir("../../lib/jsdom/living/nodes");
 addDir("../../lib/jsdom/living/range");
 addDir("../../lib/jsdom/living/selection");
+addDir("../../lib/jsdom/living/streams");
 addDir("../../lib/jsdom/living/svg");
 addDir("../../lib/jsdom/living/traversal");
 addDir("../../lib/jsdom/living/websockets");
