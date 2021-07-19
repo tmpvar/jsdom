@@ -2,6 +2,8 @@
 // This includes all tests that are run using Mocha, including web-platform-tests.
 // Whether a test runs in Node, the browser, or both is determined using annotations inside each test.
 
+require("./css/basics.js");
+
 require("./api/basics.js");
 require("./api/cookies.js");
 require("./api/encoding.js");
