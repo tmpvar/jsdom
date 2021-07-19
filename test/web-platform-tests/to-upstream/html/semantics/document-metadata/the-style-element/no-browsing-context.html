@@ -22,6 +22,25 @@ test(() => {
   assert_equals(window.getComputedStyle(doc.querySelector("p")).color, "");
 }, "no impact on getComputedStyle");
 
+test(() => {
+  const doc = document.implementation.createHTMLDocument();
+  const style = doc.createElement("style");
+  doc.head.appendChild(style);
+  assert_not_equals(style.sheet, null);
+  assert_not_equals(style.sheet, undefined);
+}, "connected style elements with no browsing context should have a non-null sheet property");
+
+test(() => {
+  const doc = document.implementation.createHTMLDocument();
+  const style = doc.createElement("style");
+  style.textContent = `
+    p { color: red; }
+  `;
+
+  doc.head.appendChild(style);
+  assert_equals(style.sheet.cssRules[0].style.color, "red");
+}, "connected style elements with no browsing context should have style rules");
+
 async_test(t => {
   const doc = document.implementation.createHTMLDocument();
   const style = document.createElement("style");
